@@ -10,3 +10,5 @@ CREATE TABLE item (
     image_url VARCHAR (2083),
     person_id INT REFERENCES person
 );
+
+INSERT INTO "item" ("description", "image_url", "person_id") VALUES ($1, $2, $3);

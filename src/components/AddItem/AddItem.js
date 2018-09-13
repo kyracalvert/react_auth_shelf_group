@@ -25,10 +25,12 @@ class AddItem extends Component {
     if (this.props.user.userName) {
       content = (
         <div>
-          <p>
-            Info Page
-          </p>
-        </div>
+          <form>
+            <input type="text" placeholder="description" />
+            <input type = "text" placeholder="image path" />
+            <input type="submit" value="submit" />
+            </form>
+        </div>      
       );
     }
 
