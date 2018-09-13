@@ -12,6 +12,13 @@ const mapStateToProps = state => ({
 });
 
 class ViewShelf extends Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      shelf = [],
+    }
+  }
+
   componentDidMount() {
     this.props.dispatch({ type: USER_ACTIONS.FETCH_USER });
   }
@@ -37,7 +44,15 @@ class ViewShelf extends Component {
           >
             Welcome, { this.props.user.userName }!
           </h1>
-          <p>Your ID is: {this.props.user.id}</p>
+          <ul>
+            {this.state.shelf.map((item, i) => {
+              return(
+                <li>
+                  <img src={item.image_url} /> {item.description} - {item.person}
+                </li>
+              )
+            })}
+          </ul>
           <button
             onClick={this.logout}
           >
