@@ -9,6 +9,13 @@ const mapStateToProps = state => ({
 });
 
 class AddItem extends Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      description: '',
+      image_url: '',
+    }
+  }
   componentDidMount() {
     this.props.dispatch({type: USER_ACTIONS.FETCH_USER});
   }
@@ -19,6 +26,12 @@ class AddItem extends Component {
     }
   }
 
+  handleInputChange = (event) => {
+    this.setState({
+      [event.target.name]: event.target.value
+    })
+  }
+
   render() {
     let content = null;
 
@@ -26,8 +39,8 @@ class AddItem extends Component {
       content = (
         <div>
           <form>
-            <input type="text" placeholder="description" />
-            <input type = "text" placeholder="image path" />
+            <input type="text" placeholder="description" value={this.state.description} name="description" onChange={this.handleInputChange}/>
+            <input type = "text" placeholder="image url" value={this.state.image_url} name="image_url" onChange={this.handleInputChange}/>
             <input type="submit" value="submit" />
             </form>
         </div>      
