@@ -5,6 +5,7 @@ import Nav from '../../components/Nav/Nav';
 
 import { USER_ACTIONS } from '../../redux/actions/userActions';
 import { triggerLogout } from '../../redux/actions/loginActions';
+import Axios from '../../../node_modules/axios';
 
 
 const mapStateToProps = state => ({
@@ -12,8 +13,28 @@ const mapStateToProps = state => ({
 });
 
 class ViewShelf extends Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      shelf: [],
+    }
+  }
+
   componentDidMount() {
     this.props.dispatch({ type: USER_ACTIONS.FETCH_USER });
+  }
+
+  getItems = () => {
+    Axios({
+      method: 'GET',
+      url: '/api/shelf',
+    }).then((response) => {
+      this.setState({
+        shelf: response.data,
+      })
+    }).catch((error) => {
+      console.log(`error: ${error}`);
+    })
   }
 
   componentDidUpdate() {
@@ -37,7 +58,15 @@ class ViewShelf extends Component {
           >
             Welcome, { this.props.user.userName }!
           </h1>
-          <p>Your ID is: {this.props.user.id}</p>
+          <ul>
+            {this.state.shelf.map((item, i) => {
+              return(
+                <li>
+                  <img src={item.image_url} /> {item.description} - {item.person}
+                </li>
+              )
+            })}
+          </ul>
           <button
             onClick={this.logout}
           >
