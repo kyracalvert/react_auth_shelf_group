@@ -5,6 +5,7 @@ import Nav from '../../components/Nav/Nav';
 
 import { USER_ACTIONS } from '../../redux/actions/userActions';
 import { triggerLogout } from '../../redux/actions/loginActions';
+import Axios from '../../../node_modules/axios';
 
 
 const mapStateToProps = state => ({
@@ -15,12 +16,25 @@ class ViewShelf extends Component {
   constructor(props){
     super(props);
     this.state = {
-      shelf = [],
+      shelf: [],
     }
   }
 
   componentDidMount() {
     this.props.dispatch({ type: USER_ACTIONS.FETCH_USER });
+  }
+
+  getItems = () => {
+    Axios({
+      method: 'GET',
+      url: '/api/shelf',
+    }).then((response) => {
+      this.setState({
+        shelf: response.data,
+      })
+    }).catch((error) => {
+      console.log(`error: ${error}`);
+    })
   }
 
   componentDidUpdate() {
