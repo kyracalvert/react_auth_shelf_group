@@ -64,6 +64,7 @@ class ViewShelf extends Component {
               return(
                 <li key={i}> 
                   <img src={item.image_url} /> {item.description} - {item.person}
+                  <button>Delete</button>
                 </li>
               )
             })}
