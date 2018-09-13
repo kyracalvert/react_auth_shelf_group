@@ -6,6 +6,7 @@ import { USER_ACTIONS } from '../../redux/actions/userActions';
 
 const mapStateToProps = state => ({
   user: state.user,
+  itemToAdd: state.itemToAdd,
 });
 
 class AddItem extends Component {
@@ -26,10 +27,16 @@ class AddItem extends Component {
     }
   }
 
+  
+
   handleInputChange = (event) => {
     this.setState({
       [event.target.name]: event.target.value
     })
+  }
+
+  handleFormSubmit = (event) => {
+    event.preventDefault();
   }
 
   render() {
@@ -38,11 +45,12 @@ class AddItem extends Component {
     if (this.props.user.userName) {
       content = (
         <div>
-          <form>
+          <form onSubmit={this.handleFormSubmit}>
             <input type="text" placeholder="description" value={this.state.description} name="description" onChange={this.handleInputChange}/>
             <input type = "text" placeholder="image url" value={this.state.image_url} name="image_url" onChange={this.handleInputChange}/>
             <input type="submit" value="submit" />
             </form>
+            {JSON.stringify(this.props.id)}
         </div>      
       );
     }
