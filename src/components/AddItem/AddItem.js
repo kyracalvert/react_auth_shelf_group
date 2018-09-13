@@ -43,6 +43,7 @@ class AddItem extends Component {
             <input type = "text" placeholder="image url" value={this.state.image_url} name="image_url" onChange={this.handleInputChange}/>
             <input type="submit" value="submit" />
             </form>
+            {JSON.stringify(this.state)}
         </div>      
       );
     }
