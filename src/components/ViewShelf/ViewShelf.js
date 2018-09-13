@@ -20,8 +20,9 @@ class ViewShelf extends Component {
     }
   }
 
-  componentDidMount() {
+  componentDidMount = () => {
     this.props.dispatch({ type: USER_ACTIONS.FETCH_USER });
+    this.getItems();
   }
 
   getItems = () => {
@@ -61,7 +62,7 @@ class ViewShelf extends Component {
           <ul>
             {this.state.shelf.map((item, i) => {
               return(
-                <li>
+                <li key={i}> 
                   <img src={item.image_url} /> {item.description} - {item.person}
                 </li>
               )

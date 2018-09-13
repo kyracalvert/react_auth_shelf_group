@@ -6,8 +6,17 @@ const router = express.Router();
  * Get all of the items on the shelf
  */
 router.get('/', (req, res) => {
-    res.sendStatus(200); // For testing only, can be removed
-});
+    const query = `SELECT "item".*, 
+    "person"."username" as person
+    FROM "item" JOIN "person" ON
+    "person"."id" = "item"."person_id";`;
+    pool.query(query).then((results) => {
+        res.send(results.rows);
+    }).catch((error) => {
+        res.sendStatus(500);
+    });
+    // res.sendStatus(200); // For testing only, can be removed
+});// end GET all items
 
 
 /**
