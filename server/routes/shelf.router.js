@@ -6,15 +6,19 @@ const router = express.Router();
  * Get all of the items on the shelf
  */
 router.get('/', (req, res) => {
-    const query = `SELECT "item".*, 
-    "person"."username" as person
-    FROM "item" JOIN "person" ON
-    "person"."id" = "item"."person_id";`;
-    pool.query(query).then((results) => {
-        res.send(results.rows);
-    }).catch((error) => {
-        res.sendStatus(500);
-    });
+    if (req.isAuthenticated()) {
+        const query = `SELECT "item".*, 
+        "person"."username" as person
+        FROM "item" JOIN "person" ON
+        "person"."id" = "item"."person_id";`;
+        pool.query(query).then((results) => {
+            res.send(results.rows);
+        }).catch((error) => {
+            res.sendStatus(500);
+        });
+    } else {
+        res.sendStatus(403);
+    }
     // res.sendStatus(200); // For testing only, can be removed
 });// end GET all items
 
@@ -44,12 +48,16 @@ router.post('/', (req, res) => {
  * Delete an item if it's something the logged in user added
  */
 router.delete('/:id', (req, res) => {
-    const query = `DELETE FROM "item" WHERE "id" = $1;`;
-    pool.query(query, [req.params.id]).then((results) => {
-        res.sendStatus(201);
-    }).catch((error) => {
-        res.sendStatus(500);
-    });
+    if (req.isAuthenticated()) {
+        const query = `DELETE FROM "item" WHERE "id" = $1;`;
+        pool.query(query, [req.params.id]).then((results) => {
+            res.sendStatus(201);
+        }).catch((error) => {
+            res.sendStatus(500);
+        });
+    } else {
+        res.sendStatus(403);
+    }
 }); // end delete
 
 
