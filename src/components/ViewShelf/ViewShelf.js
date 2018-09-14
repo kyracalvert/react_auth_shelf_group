@@ -73,10 +73,14 @@ class ViewShelf extends Component {
           </h1>
           <ul>
             {this.state.shelf.map((item, i) => {
+              let conditionalDeleteButton;
+              if (this.props.user.id === item.person_id){
+                conditionalDeleteButton = <button onClick={this.deleteItem} value={item.id}>Delete</button>
+              }
               return(
                 <li key={i}> 
-                  <img src={item.image_url} /> {item.description} - {item.person}
-                  <button onClick={this.deleteItem} value={item.id}>Delete</button>
+                  <img alt="" src={item.image_url} /> {item.description} - {item.person}
+                  {conditionalDeleteButton}
                 </li>
               )
             })}

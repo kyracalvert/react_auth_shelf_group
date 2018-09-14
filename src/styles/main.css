@@ -53,18 +53,18 @@ input[type="submit"] {
   border-radius: 0px;
 }
 
-ul {
+.navbar ul {
     list-style-type: none;
     margin: 0;
     padding: 0;
     overflow: hidden;
 }
 
-li {
+.navbar li {
     float: left;
 }
 
-li a {
+.navbar li a {
     display: block;
     color: white;
     text-align: center;
@@ -74,7 +74,11 @@ li a {
 }
 
 /* Change the link color to #111 (black) on hover */
-li a:hover {
+.navbar li a:hover {
     text-decoration: underline;
     color: #eee;
+}
+
+ul {
+    list-style-type: circle;
 }
