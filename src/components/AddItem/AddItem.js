@@ -3,13 +3,15 @@ import { connect } from 'react-redux';
 
 import Nav from '../../components/Nav/Nav';
 import { USER_ACTIONS } from '../../redux/actions/userActions';
+import axios from 'axios';
 
 const mapStateToProps = state => ({
   user: state.user,
+  itemToAdd: state.itemToAdd,
 });
 
 class AddItem extends Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
       description: '',
@@ -17,43 +19,73 @@ class AddItem extends Component {
     }
   }
   componentDidMount() {
-    this.props.dispatch({type: USER_ACTIONS.FETCH_USER});
+    this.props.dispatch({ type: USER_ACTIONS.FETCH_USER });
   }
 
   componentDidUpdate() {
+
     if (!this.props.user.isLoading && this.props.user.userName === null) {
       this.props.history.push('home');
     }
   }
 
-  handleInputChange = (event) => {
-    this.setState({
-      [event.target.name]: event.target.value
+  handleDescriptionChange = (event) => {
+    this.props.dispatch({
+      type: 'ADD_ITEM_DESCRIPTION',
+      payload: event.target.value
     })
   }
 
-  render() {
-    let content = null;
+  handleImageChange = (event) => {
+    this.props.dispatch({
+      type: 'ADD_ITEM_IMAGE',
+      payload: event.target.value
+    })
+  }
 
-    if (this.props.user.userName) {
-      content = (
-        <div>
-          <form>
-            <input type="text" placeholder="description" value={this.state.description} name="description" onChange={this.handleInputChange}/>
-            <input type = "text" placeholder="image url" value={this.state.image_url} name="image_url" onChange={this.handleInputChange}/>
-            <input type="submit" value="submit" />
-            </form>
-        </div>      
-      );
-    }
+  handleFormSubmit = (event) => {
+    event.preventDefault();
+    console.log(this.props.itemToAdd);
+    axios({
+      method: 'POST',
+      url: '/api/shelf',
+      data: this.props.itemToAdd,
+    }).then((response) => {
+      console.log(response);
+      this.props.dispatch({
+        type: 'RESET_STATE',
+      })
+      alert('Item was added.');
+    }).catch((error) => {
+      console.log(error);
+      alert('Unable to add item.');
+    })
+  }
 
-    return (
+
+render() {
+  let content = null;
+
+  if (this.props.user.userName) {
+    content = (
       <div>
-        <Nav />
-        { content }
+        <form onSubmit={this.handleFormSubmit}>
+          <input type="text" placeholder="description" name="description" onChange={this.handleDescriptionChange} />
+          <input type="text" placeholder="image url" name="image_url" onChange={this.handleImageChange} />
+          <input type="submit" value="submit" />
+        </form>
+        {JSON.stringify(this.props.id)}
       </div>
     );
   }
+
+  return (
+    <div>
+      <Nav />
+      {content}
+    </div>
+  );
+}
 }
 
 // this allows us to use <App /> in index.js
