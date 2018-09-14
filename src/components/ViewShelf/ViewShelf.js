@@ -38,6 +38,18 @@ class ViewShelf extends Component {
     })
   }
 
+  deleteItem = (event) => {
+    Axios({
+      method: 'DELETE',
+      url: `/api/shelf/${event.target.value}`
+    }).then((response) => {
+      console.log(response.data);
+      this.getItems();
+    }).catch((error) => {
+      console.log(`error: ${error}`);
+    })
+  }
+
   componentDidUpdate() {
     if (!this.props.user.isLoading && this.props.user.userName === null) {
       this.props.history.push('home');
@@ -64,7 +76,7 @@ class ViewShelf extends Component {
               return(
                 <li key={i}> 
                   <img src={item.image_url} /> {item.description} - {item.person}
-                  <button>Delete</button>
+                  <button onClick={this.deleteItem} value={item.id}>Delete</button>
                 </li>
               )
             })}
