@@ -11,13 +11,6 @@ const mapStateToProps = state => ({
 });
 
 class AddItem extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      description: '',
-      image_url: '',
-    }
-  }
   componentDidMount() {
     this.props.dispatch({ type: USER_ACTIONS.FETCH_USER });
   }
@@ -52,10 +45,10 @@ class AddItem extends Component {
       data: this.props.itemToAdd,
     }).then((response) => {
       console.log(response);
+      alert('Item was added.');
       this.props.dispatch({
         type: 'RESET_STATE',
       })
-      alert('Item was added.');
     }).catch((error) => {
       console.log(error);
       alert('Unable to add item.');
@@ -70,11 +63,10 @@ render() {
     content = (
       <div>
         <form onSubmit={this.handleFormSubmit}>
-          <input type="text" placeholder="description" name="description" onChange={this.handleDescriptionChange} />
-          <input type="text" placeholder="image url" name="image_url" onChange={this.handleImageChange} />
+          <input type="text" placeholder="description" value={this.props.itemToAdd.itemToAdd.description} name="description" onChange={this.handleDescriptionChange} />
+          <input type="text" placeholder="image url" value={this.props.itemToAdd.itemToAdd.image_url} name="image_url" onChange={this.handleImageChange} />
           <input type="submit" value="submit" />
         </form>
-        {JSON.stringify(this.props.id)}
       </div>
     );
   }
