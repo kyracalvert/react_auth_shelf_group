@@ -56,28 +56,28 @@ class AddItem extends Component {
   }
 
 
-render() {
-  let content = null;
+  render() {
+    let content = null;
 
-  if (this.props.user.userName) {
-    content = (
+    if (this.props.user.userName) {
+      content = (
+        <div>
+          <form onSubmit={this.handleFormSubmit}>
+            <input type="text" placeholder="description" value={this.props.itemToAdd.itemToAdd.description} name="description" onChange={this.handleDescriptionChange} />
+            <input type="text" placeholder="image url" value={this.props.itemToAdd.itemToAdd.image_url} name="image_url" onChange={this.handleImageChange} />
+            <input type="submit" value="submit" />
+          </form>
+        </div>
+      );
+    }
+
+    return (
       <div>
-        <form onSubmit={this.handleFormSubmit}>
-          <input type="text" placeholder="description" value={this.props.itemToAdd.itemToAdd.description} name="description" onChange={this.handleDescriptionChange} />
-          <input type="text" placeholder="image url" value={this.props.itemToAdd.itemToAdd.image_url} name="image_url" onChange={this.handleImageChange} />
-          <input type="submit" value="submit" />
-        </form>
+        <Nav />
+        {content}
       </div>
     );
   }
-
-  return (
-    <div>
-      <Nav />
-      {content}
-    </div>
-  );
-}
 }
 
 // this allows us to use <App /> in index.js
