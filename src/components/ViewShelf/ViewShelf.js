@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import { connect } from 'react-redux'; // { connect } has to be imported before we have access to dispatch
 
 import Nav from '../../components/Nav/Nav';
 
@@ -7,18 +7,13 @@ import { USER_ACTIONS } from '../../redux/actions/userActions';
 import { triggerLogout } from '../../redux/actions/loginActions';
 import Axios from '../../../node_modules/axios';
 
-
+// give the component access to the state of listed reducers
 const mapStateToProps = state => ({
   user: state.user,
+  onShelf: state.onShelf, 
 });
 
 class ViewShelf extends Component {
-  constructor(props){
-    super(props);
-    this.state = {
-      shelf: [],
-    }
-  }
 
   componentDidMount = () => {
     this.props.dispatch({ type: USER_ACTIONS.FETCH_USER });
@@ -30,8 +25,10 @@ class ViewShelf extends Component {
       method: 'GET',
       url: '/api/shelf',
     }).then((response) => {
-      this.setState({
-        shelf: response.data,
+      // this.props.dispatch is the action
+      this.props.dispatch({
+        payload: response.data,
+        type: 'DISPLAY_ITEMS',
       })
     }).catch((error) => {
       console.log(`error: ${error}`);
@@ -72,7 +69,8 @@ class ViewShelf extends Component {
             Welcome, { this.props.user.userName }!
           </h1>
           <ul>
-            {this.state.shelf.map((item, i) => {
+            {/* pull items from the reducer via props */}
+            {this.props.onShelf.map((item, i) => {
               let conditionalDeleteButton;
               if (this.props.user.id === item.person_id){
                 conditionalDeleteButton = <button onClick={this.deleteItem} value={item.id}>Delete</button>
@@ -104,5 +102,5 @@ class ViewShelf extends Component {
 }
 
 // this allows us to use <App /> in index.js
-export default connect(mapStateToProps)(ViewShelf);
+export default connect(mapStateToProps)(ViewShelf); // connect also has to be exported
 
